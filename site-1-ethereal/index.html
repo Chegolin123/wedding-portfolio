@@ -119,8 +119,10 @@
 <header class="hero">
   <div class="hero__media">
     <picture>
+      <source media="(max-width: 820px)" srcset="img/couple-portrait.webp" type="image/webp" />
       <source media="(max-width: 820px)" srcset="img/couple-portrait.jpg" />
-      <img src="img/couple-1.jpg" alt="Елена и Александр под цветочной аркой в саду" />
+      <source srcset="img/couple-1.webp" type="image/webp" />
+      <img src="img/couple-1.jpg" alt="Елена и Александр под цветочной аркой в саду" width="1344" height="768" fetchpriority="high" />
     </picture>
     <div class="hero__cap">
       <p class="hero__pre">Мы женимся</p>
@@ -150,7 +152,10 @@
   <div class="wrap">
     <div class="story">
       <div class="story__img reveal">
-        <img src="img/couple-2.jpg" alt="Елена и Александр идут по садовой аллее" loading="lazy" />
+        <picture>
+          <source srcset="img/couple-2.webp" type="image/webp" />
+          <img src="img/couple-2.jpg" alt="Елена и Александр идут по садовой аллее" loading="lazy" width="896" height="1152" />
+        </picture>
       </div>
       <div class="story__txt reveal">
         <p class="eyebrow" style="justify-content:flex-start">Наша история</p>
@@ -166,7 +171,10 @@
 <!-- Atmosphere detail (full, never cropped) -->
 <section style="padding-top:0">
   <div class="feature feature--padded reveal">
-    <img src="img/detail-1.jpg" alt="Свадебный букет в нежно-пудровых тонах" loading="lazy" />
+    <picture>
+      <source srcset="img/detail-1.webp" type="image/webp" />
+      <img src="img/detail-1.jpg" alt="Свадебный букет в нежно-пудровых тонах" loading="lazy" width="1248" height="832" />
+    </picture>
   </div>
 </section>
 
