@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Свадебные сайты — примеры работ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#FAF7F2;color:#3A3833;font-family:"Jost",sans-serif;font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:70px 24px 90px;text-align:center}
+  h1{font-family:"Cormorant Garamond",serif;font-weight:400;font-size:clamp(2.2rem,5vw,3.4rem);margin:0 0 10px;letter-spacing:.01em}
+  .sub{font-size:.74rem;letter-spacing:.34em;text-transform:uppercase;color:#6E7D6A;margin:0 0 60px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;text-align:left}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  a.card{display:block;text-decoration:none;color:inherit;background:#F2EBE0;border:1px solid rgba(184,155,94,.25);border-radius:4px;overflow:hidden;transition:transform .35s,box-shadow .35s}
+  a.card:hover{transform:translateY(-4px);box-shadow:0 24px 40px -22px rgba(58,56,51,.45)}
+  .card .ph{height:150px;background-size:cover;background-position:center}
+  .card .tx{padding:24px 24px 28px}
+  .card h2{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:1.5rem;margin:0 0 6px}
+  .card p{margin:0;font-size:.9rem;color:#6B665E}
+  .tag{display:inline-block;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:#B89B5E;margin-top:14px}
+  .foot{margin-top:60px;font-size:.78rem;color:#8A8077;font-style:italic;font-family:"Cormorant Garamond",serif}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Свадебные сайты-приглашения</h1>
+  <p class="sub">три дизайна · премиальная эстетика</p>
+  <div class="grid">
+    <a class="card" href="site-1-ethereal/">
+      <div class="ph" style="background-image:url('site-1-ethereal/img/couple-1.jpg')"></div>
+      <div class="tx"><h2>Ethereal</h2><p>Светлый, воздушный, fine-art. Пудровые и шалфейные тона.</p><span class="tag">№1 · Елена &amp; Александр</span></div>
+    </a>
+    <a class="card" href="site-2-dark-luxe/">
+      <div class="ph" style="background-image:url('site-2-dark-luxe/img/couple-1.jpg')"></div>
+      <div class="tx"><h2>Dark Luxe</h2><p>Тёмный, кинематографичный. Изумруд, золото, свечи.</p><span class="tag">№2 · Мария &amp; Дмитрий</span></div>
+    </a>
+    <a class="card" href="site-3-botanical/">
+      <div class="ph" style="background-image:url('site-3-botanical/img/couple-1.jpg')"></div>
+      <div class="tx"><h2>Botanical</h2><p>Романтичный, садовый. Каллиграфия, акварель, пастель.</p><span class="tag">№3 · Анна &amp; Виктор</span></div>
+    </a>
+  </div>
+  <p class="foot">Алексей Чеголин · @NoWayWhile</p>
+</div>
+</body>
+</html>

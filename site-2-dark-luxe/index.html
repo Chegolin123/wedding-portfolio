@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Мария & Дмитрий — 24 октября 2026</title>
+<meta name="description" content="Приглашение на свадьбу Марии и Дмитрия. 24 октября 2026, вечерний банкет." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Marcellus&display=swap" rel="stylesheet" />
+<style>
+  :root{--bg:#0E2620;--bg-2:#133229;--gold:#C6A664;--gold-soft:#B89763;--cream:#EFE6D2;--cream-dim:#BDB29B;--line:rgba(198,166,100,.30)}
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--cream);font-family:"Cormorant Garamond",serif;font-weight:300;font-size:1.18rem;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(120% 80% at 50% -10%,rgba(198,166,100,.10),transparent 55%)}
+  img{max-width:100%;display:block}
+  .mar{font-family:"Marcellus",serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
+  .narrow{max-width:680px;margin:0 auto}
+  .eyebrow{display:flex;align-items:center;justify-content:center;gap:20px;font-family:"Marcellus",serif;font-size:.74rem;letter-spacing:.46em;text-transform:uppercase;color:var(--gold);margin:0 0 28px}
+  .eyebrow::before,.eyebrow::after{content:"";height:1px;width:52px;background:var(--line)}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 1.2s cubic-bezier(.2,.7,.2,1),transform 1.2s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none}html{scroll-behavior:auto}}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:center;gap:38px;padding:24px 24px 18px;background:linear-gradient(180deg,rgba(14,38,32,.92),rgba(14,38,32,0));backdrop-filter:blur(7px);font-family:"Marcellus",serif;font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--cream-dim)}
+  nav a{color:inherit;text-decoration:none;transition:color .35s}
+  nav a:hover{color:var(--gold)}
+  @media(max-width:640px){nav{gap:20px;font-size:.6rem;padding:18px 14px}}
+
+  /* HERO — couple photo never cropped */
+  .hero{padding-top:64px;background:var(--bg)}
+  .hero__media{position:relative;width:100%;overflow:hidden}
+  .hero__media img{width:100%;height:auto;display:block}
+  .hero__media::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(8,24,19,.30) 0%,transparent 30%,transparent 45%,rgba(8,24,19,.82) 100%)}
+  .hero__cap{position:absolute;left:0;right:0;bottom:0;z-index:2;text-align:center;padding:0 28px 36px}
+  .hero__frame{display:inline-block;border:1px solid rgba(198,166,100,.55);padding:clamp(26px,4vw,46px) clamp(34px,6vw,64px);position:relative;background:rgba(8,24,19,.22);backdrop-filter:blur(1px)}
+  .hero__frame::before,.hero__frame::after{content:"";position:absolute;width:12px;height:12px;border:1px solid var(--gold)}
+  .hero__frame::before{top:-6px;left:-6px;border-right:0;border-bottom:0}
+  .hero__frame::after{bottom:-6px;right:-6px;border-left:0;border-top:0}
+  .hero__pre{font-family:"Marcellus",serif;font-size:.7rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin:0 0 20px}
+  .hero__names{font-family:"Marcellus",serif;font-weight:400;font-size:clamp(2.2rem,8vw,5.6rem);line-height:1;margin:0;color:var(--cream);text-shadow:0 2px 30px rgba(0,0,0,.6)}
+  .hero__amp{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--gold);font-weight:300;padding:0 .12em}
+  .hero__date{margin:22px 0 0;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1.1rem;color:var(--cream-dim);letter-spacing:.06em}
+
+  .hero__meta{text-align:center;padding:40px 24px 8px}
+  .countdown{display:flex;justify-content:center;gap:clamp(22px,5vw,60px)}
+  .cd__num{font-family:"Cormorant Garamond",serif;font-weight:300;font-size:clamp(2rem,6vw,3.2rem);line-height:1;color:var(--cream)}
+  .cd__lab{font-family:"Marcellus",serif;font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-top:12px}
+  .cd__item{text-align:center}
+
+  section{padding:clamp(80px,11vh,140px) 0;position:relative;z-index:1}
+  .lead{font-family:"Cormorant Garamond",serif;font-weight:300;font-style:italic;font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.55;text-align:center;color:var(--cream)}
+  .lead::after{content:"";display:block;width:60px;height:1px;background:var(--gold);margin:32px auto 0}
+
+  .feature{width:100%}
+  .feature--padded{padding:0 clamp(16px,6vw,80px)}
+  .feature img{width:100%;height:auto;display:block;border:1px solid var(--line)}
+
+  .story{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(40px,6vw,88px);align-items:center}
+  @media(max-width:860px){.story{grid-template-columns:1fr;gap:44px}}
+  .story__img{position:relative;border:1px solid var(--line);padding:12px}
+  .story__img img{width:100%;height:auto;display:block}
+  .story__txt h3{font-family:"Marcellus",serif;font-weight:400;font-size:clamp(1.9rem,3.6vw,2.6rem);margin:0 0 22px;line-height:1.2;color:var(--cream)}
+  .story__txt p{margin:0 0 18px;color:var(--cream-dim)}
+  .story__sig{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1.6rem;color:var(--gold);margin-top:6px}
+
+  .agenda{max-width:620px;margin-inline:auto;list-style:none;padding:0}
+  .agenda__row{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:baseline;padding:26px 0;border-bottom:1px solid var(--line)}
+  .agenda__row:last-child{border-bottom:0}
+  .agenda__n{font-family:"Marcellus",serif;color:var(--gold);font-size:1.5rem;letter-spacing:.1em;min-width:78px}
+  .agenda__e{font-family:"Cormorant Garamond",serif;font-size:1.3rem;color:var(--cream)}
+  .agenda__e small{display:block;font-size:1rem;color:var(--cream-dim);font-style:italic;margin-top:4px}
+
+  .events{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  @media(max-width:760px){.events{grid-template-columns:1fr}}
+  .ev{border:1px solid var(--line);padding:56px 40px;text-align:center;background:rgba(255,255,255,.02)}
+  .ev__ic{width:40px;height:40px;margin:0 auto 22px;color:var(--gold)}
+  .ev h3{font-family:"Marcellus",serif;font-weight:400;font-size:1.7rem;margin:0 0 6px;color:var(--cream)}
+  .ev__sub{font-family:"Marcellus",serif;font-size:.66rem;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);margin:0 0 24px}
+  .ev p{margin:6px 0;color:var(--cream-dim)}
+  .ev__strong{color:var(--cream);font-style:italic;font-size:1.25rem}
+
+  .rsvp form{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:680px;margin:0 auto}
+  @media(max-width:620px){.rsvp form{grid-template-columns:1fr}}
+  .field{display:flex;flex-direction:column;gap:8px}
+  .field.full{grid-column:1/-1}
+  label{font-family:"Marcellus",serif;font-size:.64rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+  input,select,textarea{font-family:"Cormorant Garamond",serif;font-size:1.1rem;color:var(--cream);background:transparent;border:0;border-bottom:1px solid var(--line);padding:12px 2px;border-radius:0;transition:border-color .3s}
+  input::placeholder,textarea::placeholder{color:rgba(189,178,155,.5)}
+  input:focus,select:focus,textarea:focus{outline:none;border-bottom-color:var(--gold)}
+  select option{background:var(--bg);color:var(--cream)}
+  textarea{resize:vertical;min-height:84px}
+  .btn{grid-column:1/-1;justify-self:center;margin-top:14px;font-family:"Marcellus",serif;font-size:.84rem;letter-spacing:.34em;color:var(--bg);background:var(--gold);border:1px solid var(--gold);padding:18px 56px;cursor:pointer;text-transform:uppercase;transition:all .35s}
+  .btn:hover,.btn:focus-visible{background:transparent;color:var(--gold);outline:none}
+  .form-note{text-align:center;color:var(--cream-dim);font-style:italic;margin-top:18px;grid-column:1/-1}
+
+  footer{padding:70px 0 60px;text-align:center;border-top:1px solid var(--line);position:relative;z-index:1}
+  footer .mono{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:2.4rem;color:var(--gold);margin:0 0 14px}
+  footer .small{font-family:"Marcellus",serif;font-size:.66rem;letter-spacing:.34em;text-transform:uppercase;color:var(--cream-dim)}
+</style>
+</head>
+<body>
+
+<nav aria-label="Основные разделы">
+  <a href="#story">История</a>
+  <a href="#agenda">Вечер</a>
+  <a href="#details">Место</a>
+  <a href="#rsvp">Анкета</a>
+</nav>
+
+<header class="hero">
+  <div class="hero__media">
+    <img src="img/couple-1.jpg" alt="Мария и Дмитрий в свечном зале" />
+    <div class="hero__cap"><div class="hero__frame">
+      <p class="hero__pre">Save the date</p>
+      <h1 class="hero__names mar">Мария<span class="hero__amp"> &amp; </span>Дмитрий</h1>
+      <p class="hero__date">24 октября 2026 · вечерний банкет</p>
+    </div></div>
+  </div>
+  <div class="hero__meta">
+    <div class="countdown" id="countdown" aria-hidden="true">
+      <div class="cd__item"><div class="cd__num" data-d>0</div><div class="cd__lab">дней</div></div>
+      <div class="cd__item"><div class="cd__num" data-h>0</div><div class="cd__lab">часов</div></div>
+      <div class="cd__item"><div class="cd__num" data-m>0</div><div class="cd__lab">минут</div></div>
+      <div class="cd__item"><div class="cd__num" data-s>0</div><div class="cd__lab">секунд</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="welcome" class="reveal">
+  <div class="wrap narrow">
+    <p class="eyebrow">Дорогие гости</p>
+    <p class="lead">В окружении самых близких мы произнесём друг другу «да». Приглашаем вас провести с нами вечер, который останется с нами навсегда.</p>
+  </div>
+</section>
+
+<section id="story">
+  <div class="wrap">
+    <div class="story">
+      <div class="story__img reveal">
+        <img src="img/couple-2.jpg" alt="Мария и Дмитрий, нежный момент при свечах" loading="lazy" />
+      </div>
+      <div class="story__txt reveal">
+        <p class="eyebrow" style="justify-content:flex-start">Наша история</p>
+        <h3 class="mar">Семь лет тишины и грома</h3>
+        <p>Мы встретились в театре — на последнем акте одной пьесы. Дмитрий не знал, что в кармане у Марии был билет на соседнее кресло. После спектакля разговор продолжился до рассвета.</p>
+        <p>Семь лет, два города, одна собака и бесконечное уважение — именно это привело нас к этому вечеру.</p>
+        <p class="story__sig">М. &amp; Д.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="feature feature--padded reveal">
+    <img src="img/detail-1.jpg" alt="Сервировка стола со свечами и тёмными цветами" loading="lazy" />
+  </div>
+</section>
+
+<section id="agenda" class="reveal">
+  <div class="wrap">
+    <p class="eyebrow">Течение вечера</p>
+    <ol class="agenda">
+      <li class="agenda__row"><span class="agenda__n">17:00</span><span class="agenda__e">Встреча гостей<small>Приветственный бокал в каминном зале</small></span></li>
+      <li class="agenda__row"><span class="agenda__n">18:00</span><span class="agenda__e">Церемония<small>Обмен клятвами при свечах</small></span></li>
+      <li class="agenda__row"><span class="agenda__n">19:30</span><span class="agenda__e">Праздничный ужин<small>Дегустационное меню из шести подач</small></span></li>
+      <li class="agenda__row"><span class="agenda__n">22:00</span><span class="agenda__e">Первый танец<small>И открытие танцевального пола</small></span></li>
+      <li class="agenda__row"><span class="agenda__n">00:30</span><span class="agenda__e">Фейерверк<small>Завершение вечера под открытым небом</small></span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="details">
+  <div class="wrap">
+    <p class="eyebrow reveal">Место</p>
+    <div class="events">
+      <div class="ev reveal">
+        <svg class="ev__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M12 2 3 10v12h18V10L12 2zM9 22v-7h6v7"/></svg>
+        <h3 class="mar">Усадьба «Тёмный сад»</h3>
+        <p class="ev__sub">Церемония · 18:00</p>
+        <p class="ev__strong">Историческая оранжерея</p>
+        <p>Московская обл., Истринский р-н</p>
+        <p>Парк при отреставрированном имении</p>
+      </div>
+      <div class="ev reveal">
+        <svg class="ev__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 21V9l7-6 7 6v12M9 21v-6h6v6"/></svg>
+        <h3 class="mar">Каминный зал</h3>
+        <p class="ev__sub">Банкет · 19:30</p>
+        <p class="ev__strong">Главный дом усадьбы</p>
+        <p>Сервированный ужин при свечах</p>
+        <p>Диджей-сет до 02:00</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rsvp" class="rsvp reveal">
+  <div class="wrap narrow">
+    <p class="eyebrow">Подтверждение присутствия</p>
+    <p class="lead" style="font-size:1.6rem">Сообщите нам о своём решении до 1 октября</p>
+    <form id="rsvpForm" novalidate>
+      <div class="field"><label for="fn">Имя</label><input id="fn" name="name" required placeholder="Ваше имя" /></div>
+      <div class="field"><label for="ph">Телефон</label><input id="ph" name="phone" type="tel" placeholder="+7" /></div>
+      <div class="field full"><label for="at">Сможете прийти?</label>
+        <select id="at" name="attend" required>
+          <option value="">— выберите —</option>
+          <option>Да, с радостью буду</option>
+          <option>К сожалению, не смогу</option>
+        </select>
+      </div>
+      <div class="field full"><label for="cnt">Гостей</label>
+        <select id="cnt" name="count"><option>1</option><option>2</option></select>
+      </div>
+      <div class="field full"><label for="msg">Пожелания</label><textarea id="msg" name="msg" placeholder="Диетические ограничения, музыкальные пожелания"></textarea></div>
+      <button class="btn" type="submit">Отправить</button>
+      <p class="form-note" id="formNote" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <p class="mono">М &amp; Д</p>
+  <p class="small">24 · 10 · 2026</p>
+</footer>
+
+<script>
+  (function(){var t=new Date('2026-10-24T18:00:00+03:00').getTime();
+    var d=document.querySelector('[data-d]'),h=document.querySelector('[data-h]'),m=document.querySelector('[data-m]'),s=document.querySelector('[data-s]');
+    function pad(n){return n<10?'0'+n:n}
+    function tick(){var diff=Math.max(0,t-Date.now());
+      if(d)d.textContent=pad(Math.floor(diff/86400000));
+      if(h)h.textContent=pad(Math.floor(diff%86400000/3600000));
+      if(m)m.textContent=pad(Math.floor(diff%3600000/60000));
+      if(s)s.textContent=pad(Math.floor(diff%60000/1000));}
+    tick();setInterval(tick,1000);})();
+  (function(){if(matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in')});return}
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.16});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});})();
+  document.getElementById('rsvpForm').addEventListener('submit',function(e){
+    e.preventDefault();var note=document.getElementById('formNote');
+    if(!this.checkValidity()){note.textContent='Пожалуйста, заполните обязательные поля.';return}
+    note.textContent='Благодарим. Ваш ответ получен.';this.reset();});
+</script>
+</body>
+</html>

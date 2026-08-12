@@ -1,0 +1,17 @@
+# Secrets — NEVER commit (Gemini API key lives here)
+gen_wedding.py
+*.env
+.env*
+
+# Python
+__pycache__/
+*.pyc
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Tooling artifacts
+.playwright-mcp/
