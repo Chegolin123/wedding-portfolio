@@ -15,3 +15,6 @@ Thumbs.db
 
 # Tooling artifacts
 .playwright-mcp/
+
+# ZCode session state
+.zcode/
