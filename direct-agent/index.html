@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Директ ИИ-Агент — кейс · управление Яндекс.Директ и ВК Реклама</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #050505;
+    --bg2: #0b0b0e;
+    --card: rgba(255,255,255,0.03);
+    --hairline: rgba(255,255,255,0.08);
+    --text: #f2f2f0;
+    --muted: #8a8a93;
+    --faint: #5a5a63;
+    --accent: #d4ff3f;
+    --accent2: #6ee7ff;
+    --warn: #ffb454;
+    --danger: #ff5f5f;
+    --ok: #7bd88f;
+    --radius: 20px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  /* ambient orbs */
+  .orb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events:none; z-index:0; }
+  .orb-1 { width: 600px; height: 600px; background: rgba(212,255,63,0.07); top: -200px; right: -100px; }
+  .orb-2 { width: 500px; height: 500px; background: rgba(110,231,255,0.05); bottom: -150px; left: -100px; }
+  .orb-3 { width: 400px; height: 400px; background: rgba(255,180,84,0.04); top: 40%; left: 40%; }
+
+  .wrap { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(20px);
+    background: rgba(5,5,5,0.75);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .nav-inner { display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .logo { display:flex; align-items:center; gap:10px; font-weight:600; font-size:15px; letter-spacing:-0.02em; }
+  .logo-dot { width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 12px var(--accent); }
+  .nav-links { display:flex; gap:26px; font-size:13px; color:var(--muted); }
+  .nav-links a { color:inherit; text-decoration:none; transition:color .2s; }
+  .nav-links a:hover { color:var(--text); }
+  .nav-gh { font-size:13px; font-weight:500; color:var(--text); text-decoration:none;
+    border:1px solid var(--hairline); padding:8px 16px; border-radius:999px;
+    background:var(--card); transition:border-color .2s, background .2s; }
+  .nav-gh:hover { border-color:rgba(212,255,63,0.4); background:rgba(212,255,63,0.06); }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 96px 0 56px; }
+  .tag {
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; color:var(--accent); letter-spacing:0.14em; text-transform:uppercase;
+    border:1px solid rgba(212,255,63,0.25); border-radius:999px;
+    padding:6px 14px; background:rgba(212,255,63,0.05); margin-bottom:24px;
+  }
+  .tag::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px var(--accent); }
+  h1 {
+    font-size: clamp(34px, 6vw, 64px);
+    font-weight: 600; letter-spacing: -0.035em; line-height: 1.05;
+  }
+  h1 .thin { font-weight: 300; color: var(--muted); }
+  h1 .accent { color: var(--accent); }
+  .sub { margin-top: 22px; font-size: clamp(15px, 2.2vw, 18px); color: var(--muted); max-width: 640px; line-height: 1.6; }
+  .cta-row { margin-top: 34px; display:flex; gap:14px; flex-wrap:wrap; }
+  .cta {
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:15px; font-weight:500; text-decoration:none; color:var(--bg);
+    background:var(--accent); border-radius:999px; padding:14px 26px;
+    transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s;
+    box-shadow: 0 8px 30px -8px rgba(212,255,63,0.45);
+  }
+  .cta:hover { transform: translateY(-2px); }
+  .cta.ghost { background:transparent; color:var(--text); border:1px solid var(--hairline); box-shadow:none; }
+  .cta.ghost:hover { border-color:rgba(255,255,255,0.25); }
+
+  /* ---------- Stat strip ---------- */
+  .stats {
+    display:grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin: 64px 0 0;
+  }
+  .stat {
+    background: var(--card); border: 1px solid var(--hairline);
+    border-radius: var(--radius); padding: 22px 18px;
+    backdrop-filter: blur(10px);
+  }
+  .stat b { display:block; font-size: clamp(24px, 3.4vw, 36px); font-weight:600; letter-spacing:-0.03em; }
+  .stat b .mono { font-family:"JetBrains Mono", monospace; font-size:0.72em; font-weight:500; color:var(--faint); }
+  .stat span { display:block; margin-top:6px; font-size:12px; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; }
+  .stat b.green { color: var(--accent); }
+  .stat b.cyan { color: var(--accent2); }
+  .stat b.warn { color: var(--warn); }
+
+  /* ---------- Sections ---------- */
+  section { padding: 72px 0; }
+  .sec-head { display:flex; align-items:baseline; gap:16px; margin-bottom:34px; }
+  .sec-num { font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--accent); }
+  h2 { font-size: clamp(24px, 3.6vw, 36px); font-weight:600; letter-spacing:-0.03em; }
+  h2 .thin { font-weight:300; color:var(--muted); }
+
+  /* ---------- Capability cards ---------- */
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:14px; }
+  .card {
+    background: var(--card); border:1px solid var(--hairline); border-radius: var(--radius);
+    padding: 26px; backdrop-filter: blur(10px);
+    transition: border-color .3s, transform .3s cubic-bezier(.22,1,.36,1);
+    position: relative; overflow: hidden;
+  }
+  .card::after {
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background: radial-gradient(600px circle at var(--x,50%) var(--y,0%), rgba(255,255,255,0.04), transparent 45%);
+    opacity:0; transition:opacity .3s;
+  }
+  .card:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-2px); }
+  .card:hover::after { opacity:1; }
+  .card-icon { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+    background: rgba(255,255,255,0.05); border:1px solid var(--hairline); margin-bottom:16px; font-size:19px; }
+  .card h3 { font-size:17px; font-weight:600; letter-spacing:-0.02em; margin-bottom:8px; }
+  .card p { font-size:13.5px; color:var(--muted); line-height:1.6; }
+  .card .chips { margin-top:14px; display:flex; flex-wrap:wrap; gap:6px; }
+  .chip { font-size:11px; color:var(--muted); border:1px solid var(--hairline); border-radius:999px; padding:4px 10px; font-family:"JetBrains Mono",monospace; }
+  .chip.g { color:var(--accent); border-color:rgba(212,255,63,0.25); background:rgba(212,255,63,0.05); }
+  .chip.c { color:var(--accent2); border-color:rgba(110,231,255,0.25); background:rgba(110,231,255,0.05); }
+  .chip.w { color:var(--warn); border-color:rgba(255,180,84,0.3); background:rgba(255,180,84,0.06); }
+
+  /* ---------- Pipeline ---------- */
+  .pipe { display:grid; grid-template-columns: repeat(6, 1fr); gap:10px; }
+  .step {
+    background: var(--card); border:1px solid var(--hairline); border-radius:14px;
+    padding:16px 14px; text-align:center;
+  }
+  .step .n { font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--faint); letter-spacing:0.1em; }
+  .step .t { margin-top:8px; font-size:13px; font-weight:500; }
+  .step .d { margin-top:4px; font-size:11px; color:var(--muted); line-height:1.45; }
+
+  /* ---------- Terminal ---------- */
+  .terminal {
+    background:#0a0a0c; border:1px solid var(--hairline); border-radius:16px;
+    overflow:hidden; font-family:"JetBrains Mono",monospace; font-size:12.5px; line-height:1.75;
+  }
+  .term-head { display:flex; gap:8px; padding:12px 16px; border-bottom:1px solid var(--hairline); }
+  .term-head i { width:10px; height:10px; border-radius:50%; }
+  .term-head i:nth-child(1) { background:#ff5f57; } .term-head i:nth-child(2) { background:#febc2e; } .term-head i:nth-child(3) { background:#28c840; }
+  .term-body { padding:18px 20px; overflow-x:auto; }
+  .term-body .p { color:var(--accent); }
+  .term-body .c { color:var(--accent2); }
+  .term-body .w { color:var(--warn); }
+  .term-body .d { color:var(--danger); }
+  .term-body .g { color:var(--ok); }
+  .term-body .m { color:var(--muted); }
+  .term-body .f { color:var(--faint); }
+
+  /* ---------- Guardrail flags ---------- */
+  .flags { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:12px; }
+  .flag {
+    display:flex; align-items:flex-start; gap:12px;
+    background:var(--card); border:1px solid var(--hairline); border-radius:14px; padding:16px;
+  }
+  .flag .ic { width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
+  .flag.g .ic { background:rgba(123,216,143,0.12); }
+  .flag.w .ic { background:rgba(255,180,84,0.12); }
+  .flag.d .ic { background:rgba(255,95,95,0.12); }
+  .flag b { display:block; font-size:14px; font-weight:600; margin-bottom:4px; }
+  .flag span { font-size:12px; color:var(--muted); line-height:1.5; }
+
+  /* ---------- Table ---------- */
+  .tbl { width:100%; border-collapse:collapse; font-size:13px; }
+  .tbl th { text-align:left; color:var(--faint); font-weight:500; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; padding:12px 14px; border-bottom:1px solid var(--hairline); }
+  .tbl td { padding:13px 14px; border-bottom:1px solid rgba(255,255,255,0.05); color:var(--muted); }
+  .tbl td:first-child { color:var(--text); font-weight:500; }
+  .tbl .mono { font-family:"JetBrains Mono",monospace; font-size:12px; }
+  .badge { display:inline-block; font-size:11px; border-radius:999px; padding:3px 10px; font-weight:500; }
+  .badge.live { color:var(--ok); background:rgba(123,216,143,0.1); border:1px solid rgba(123,216,143,0.3); }
+  .badge.pause { color:var(--warn); background:rgba(255,180,84,0.08); border:1px solid rgba(255,180,84,0.25); }
+  .badge.dev { color:var(--accent2); background:rgba(110,231,255,0.08); border:1px solid rgba(110,231,255,0.25); }
+
+  /* ---------- Stack ---------- */
+  .stack { display:flex; flex-wrap:wrap; gap:10px; }
+  .stack .chip { font-size:12px; padding:7px 14px; }
+
+  /* ---------- Footer ---------- */
+  footer { border-top:1px solid var(--hairline); padding: 44px 0 60px; margin-top: 40px; }
+  .foot-inner { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+  .foot-inner p { font-size:13px; color:var(--faint); }
+  .foot-inner a { color:var(--muted); text-decoration:none; font-size:13px; }
+  .foot-inner a:hover { color:var(--text); }
+
+  @media (max-width: 720px) {
+    .nav-links { display:none; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .pipe { grid-template-columns: repeat(3, 1fr); }
+    section { padding: 56px 0; }
+    .hero { padding: 72px 0 40px; }
+  }
+  @media (max-width: 480px) {
+    .pipe { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+
+<nav>
+  <div class="wrap nav-inner">
+    <div class="logo"><span class="logo-dot"></span>Direct AI Agent</div>
+    <div class="nav-links">
+      <a href="#capabilities">Возможности</a>
+      <a href="#pipeline">Пайплайн</a>
+      <a href="#guardrails">Guardrails</a>
+      <a href="#tools">Инструменты</a>
+      <a href="#stack">Стек</a>
+    </div>
+    <a class="nav-gh" href="https://github.com/Chegolin123/direct-core" target="_blank">GitHub ↗</a>
+  </div>
+</nav>
+
+<header class="wrap hero">
+  <span class="tag">Кейс · личная разработка · 2026</span>
+  <h1>
+    ИИ-агент управления<br />
+    <span class="thin">Яндекс.Директ и</span> <span class="accent">ВК Реклама</span>
+  </h1>
+  <p class="sub">
+    Агент-директолог, работающий как MCP-сервер: анализирует метрики, запускает кампании под ключ,
+    проходит модерацию Яндекса, корректирует ставки и собирает лиды. Защищён guardrails от слива бюджета.
+    Подключён к боевым API обеих платформ.
+  </p>
+  <div class="cta-row">
+    <a class="cta" href="https://github.com/Chegolin123/direct-core" target="_blank">Репозиторий на GitHub ↗</a>
+    <a class="cta ghost" href="#capabilities">Что умеет</a>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b class="green">47<span class="mono"> tools</span></b><span>Яндекс.Директ API v5</span></div>
+    <div class="stat"><b class="cyan">19<span class="mono"> tools</span></b><span>VK Ads API v2</span></div>
+    <div class="stat"><b>3<span class="mono"> rag</span></b><span>база знаний 210+ чанков</span></div>
+    <div class="stat"><b class="warn">27<span class="mono"> scen</span></b><span>сценариев песочницы</span></div>
+  </div>
+  <div class="stats" style="margin-top:14px">
+    <div class="stat"><b>88<span class="mono"> ext</span></b><span>независимых external-тестов · 94.3% PASS</span></div>
+    <div class="stat"><b>98<span class="mono"> tasks</span></b><span>TargetBench: свой бенчмарк таргетолога</span></div>
+    <div class="stat"><b>~360<span class="mono"> tests</span></b><span>pytest · ruff clean · CI</span></div>
+    <div class="stat"><b class="green">0₽<span class="mono"> spent</span></b><span>боевой write-цикл без потерь</span></div>
+  </div>
+</header>
+
+<section class="wrap" id="capabilities">
+  <div class="sec-head">
+    <span class="sec-num">01</span>
+    <h2>Возможности <span class="thin">агента</span></h2>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon">🚀</div>
+      <h3>Запуск кампании под ключ</h3>
+      <p>Один вызов <span class="mono" style="font-size:12px;color:var(--accent2)">launch_campaign</span>: группа → объявления → ключи → минус-слова. Все тексты проходят ФЗ-38-чек до заливки.</p>
+      <div class="chips"><span class="chip g">ФЗ-38</span><span class="chip">AIDA</span><span class="chip c">guardrails</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔄</div>
+      <h3>Модерационный цикл</h3>
+      <p>Статус модерации, авто-правка отклонённых объявлений (REJECTED → fix → перепроверка Яндекса), лимит попыток.</p>
+      <div class="chips"><span class="chip g">DRAFT → ACTIVE</span><span class="chip w">REJECTED → fix</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>Аналитика и ставки</h3>
+      <p>Метрики по кампаниям и группам, ставки get/set, корректировки (гео / устройства / возраст / праздники −90..+1200%).</p>
+      <div class="chips"><span class="chip c">BidModifiers</span><span class="chip">ADGROUP отчёт</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <h3>Семантика и лиды</h3>
+      <p>Сбор семантического ядра: WordStat v4 + интент-классификация (горячие/тёплые/холодные), авто-минус-слова из поисковых запросов, лиды + CPL.</p>
+      <div class="chips"><span class="chip g">WordStat v4</span><span class="chip c">Leads API</span><span class="chip">Лукашов</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <h3>Система защиты бюджета</h3>
+      <p>Hard limits, sanity-check, append-only аудит, kill-switch. Диапазон корректировок проверяется до API.</p>
+      <div class="chips"><span class="chip w">3000₽/группа</span><span class="chip w">15000₽/день</span><span class="chip w">500₽/ставка</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏗️</div>
+      <h3>Песочница-симулятор</h3>
+      <p>HTTP-эмулятор API Директа: виртуальное время, сюжеты (слив бюджета, обвал CTR, модерация), fault-injection. Репетиция до боя.</p>
+      <div class="chips"><span class="chip c">88 external сценариев</span><span class="chip">fault-injection</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📚</div>
+      <h3>RAG по экспертизе</h3>
+      <p>База 210+ чанков: онтология директолога, комплаенс (ФЗ-38, решения ФАС), анти-AI-slop паттерны. Гибридный поиск + re-rank.</p>
+      <div class="chips"><span class="chip g">e5-small</span><span class="chip c">cross-encoder</span><span class="chip">FTS5+BM25</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <h3>Оценка качества</h3>
+      <p>TargetBench — собственный бенчмарк таргетолога: 98 задач, 8 тем, 6 типов, pass@k. Baseline DeepSeek 71.8%.</p>
+      <div class="chips"><span class="chip">HumanEval-style</span><span class="chip c">pass@k</span><span class="chip w">canary</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="pipeline">
+  <div class="sec-head">
+    <span class="sec-num">02</span>
+    <h2>Пайплайн <span class="thin">запуска</span></h2>
+  </div>
+  <div class="pipe">
+    <div class="step"><div class="n">STEP 1</div><div class="t">Семантика</div><div class="d">WordStat + интент → ядро, минус-слова</div></div>
+    <div class="step"><div class="n">STEP 2</div><div class="t">Креативы</div><div class="d">генерация + скоринг + комплаенс</div></div>
+    <div class="step"><div class="n">STEP 3</div><div class="t">Запуск</div><div class="d">группа, объявления, ключи, бюджет</div></div>
+    <div class="step"><div class="n">STEP 4</div><div class="t">Модерация</div><div class="d">DRAFT → ON_MODERATION → ACTIVE</div></div>
+    <div class="step"><div class="n">STEP 5</div><div class="t">Оптимизация</div><div class="d">ставки, корректировки, минус-слова</div></div>
+    <div class="step"><div class="n">STEP 6</div><div class="t">Лиды</div><div class="d">Leads API + CPL + отчёт в TG</div></div>
+  </div>
+
+  <div class="terminal" style="margin-top:26px">
+    <div class="term-head"><i></i><i></i><i></i></div>
+    <div class="term-body">
+      <div><span class="p">$</span> <span class="c">agent.launch_campaign</span>(business="услуги юриста", budget=5000)</div>
+      <div class="m">→ semantic core: 24 фразы (🔥 8 горячих, 🟡 9 тёплых, ❄️ 7 холодных)</div>
+      <div class="m">→ креативы: 3 варианта, скоринг: 9/10, 8.5/10, 8/10 — ФЗ-38 ✅ AIDA ✅</div>
+      <div class="m">→ минус-слова: 11 фраз (≥30 показов, 0 кликов)</div>
+      <div class="m">→ кампания создана (id 713326984) · дневной бюджет 5000₽ · группа · 3 объявления</div>
+      <div class="m">→ статус: <span class="w">DRAFT</span> → <span class="w">ON_MODERATION</span> → <span class="g">ACTIVE</span></div>
+      <div class="m">→ guardrails: расход ≤ 15000₽/день · аудит записан</div>
+      <div><span class="g">✓</span> кампания запущена и проходит модерацию. Отклонённые объявления агент правит сам.</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="guardrails">
+  <div class="sec-head">
+    <span class="sec-num">03</span>
+    <h2>Guardrails — <span class="thin">защита от слива</span></h2>
+  </div>
+  <div class="flags">
+    <div class="flag g"><div class="ic">🔒</div><div><b>Hard limits</b><span>3000₽ на группу, 15000₽ в день, 500₽ ставка — проверка ДО вызова API</span></div></div>
+    <div class="flag w"><div class="ic">📋</div><div><b>Sanity-check</b><span>второй проход: аномальные операции переспрашиваются</span></div></div>
+    <div class="flag d"><div class="ic">✋</div><div><b>Kill-switch</b><span>env DIRECT_KILL_SWITCH мгновенно блокирует все write-операции</span></div></div>
+    <div class="flag g"><div class="ic">📜</div><div><b>Append-only аудит</b><span>каждая операция с деньгами — в JSONL, контекст промпта сохраняется</span></div></div>
+    <div class="flag g"><div class="ic">🧾</div><div><b>Диапазоны до API</b><span>корректировки ставок −90..+1200% — блокировка вне диапазона</span></div></div>
+    <div class="flag w"><div class="ic">🧪</div><div><b>Тест на бою</b><span>write-цикл на реальном аккаунте в DRAFT — расход 0₽</span></div></div>
+  </div>
+</section>
+
+<section class="wrap" id="tools">
+  <div class="sec-head">
+    <span class="sec-num">04</span>
+    <h2>Инструменты <span class="thin">MCP</span></h2>
+  </div>
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <tr><th>Сервер</th><th>Платформа</th><th>Инструментов</th><th>Статус</th><th>Примеры</th></tr>
+    <tr><td class="mono">yandex-direct</td><td>Яндекс.Директ API v5</td><td>47</td><td><span class="badge live">боевой</span></td><td class="mono">launch_campaign · get_metrics · wordstat · generate_creative · add_bid_modifier · get_leads</td></tr>
+    <tr><td class="mono">vk-ads</td><td>VK Ads API v2</td><td>19</td><td><span class="badge pause">пауза до ИП</span></td><td class="mono">планы · группы · баннеры · метрики · лиды · аудитории</td></tr>
+    <tr><td class="mono">rag-kb</td><td>RAG-база экспертизы</td><td>3</td><td><span class="badge live">боевой</span></td><td class="mono">search · stats · feedback</td></tr>
+    <tr><td class="mono">sandbox-control</td><td>Песочница-эмулятор</td><td>8</td><td><span class="badge dev">по требованию</span></td><td class="mono">run_scenario · inject_event · advance · reset</td></tr>
+  </table>
+  </div>
+
+  <div class="terminal" style="margin-top:26px">
+    <div class="term-head"><i></i><i></i><i></i></div>
+    <div class="term-body">
+      <div class="m"># Один вызов — полный цикл запуска (v2.1):</div>
+      <div><span class="p">$</span> <span class="c">launch_campaign</span> — create_campaign → add_adgroup → add_ads → add_keywords → add_negative_keywords</div>
+      <div class="m"># Модерационный цикл (v2.2):</div>
+      <div><span class="p">$</span> <span class="c">update_ad</span> — REJECTED (AI-slop) → чистый текст → перепроверка → <span class="g">ACTIVE</span></div>
+      <div class="m"># Семантическое ядро (v0.11):</div>
+      <div><span class="p">$</span> <span class="c">collect_semantic_core</span> — модификаторы → WordStat → интент → прогноз лидов → минус-слова</div>
+      <div class="m"># Самообучение (v0.16):</div>
+      <div><span class="p">$</span> <span class="c">record_outcome</span> — результат кампании → RAG (category=performance_feedback) → агент не повторяет ошибок</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="stack">
+  <div class="sec-head">
+    <span class="sec-num">05</span>
+    <h2>Стек <span class="thin">и качество</span></h2>
+  </div>
+  <div class="stack">
+    <span class="chip">Python 3.11</span>
+    <span class="chip g">FastMCP / MCP</span>
+    <span class="chip g">Яндекс.Директ API v5</span>
+    <span class="chip c">VK Ads API v2</span>
+    <span class="chip">Pydantic AI</span>
+    <span class="chip">RAG · e5-small</span>
+    <span class="chip c">cross-encoder re-rank</span>
+    <span class="chip">sqlite-vec</span>
+    <span class="chip w">guardrails</span>
+    <span class="chip">async · arq</span>
+    <span class="chip c">Langfuse</span>
+    <span class="chip">pytest · ruff</span>
+    <span class="chip">GitHub CI</span>
+    <span class="chip g">боевой API</span>
+  </div>
+
+  <div class="terminal" style="margin-top:26px">
+    <div class="term-head"><i></i><i></i><i></i></div>
+    <div class="term-body">
+      <div><span class="p">$</span> python scripts/run_all_tests.py</div>
+      <div class="g">mcp_direct .... 159 passed</div>
+      <div class="g">sandbox ...... 66 passed (88 external opt-in: 94.3% PASS)</div>
+      <div class="g">benchmark .... 46 passed (TargetBench: deepseek 71.8%)</div>
+      <div class="g">rag .......... 29 passed</div>
+      <div class="f">ruff: all clean · coverage mcp_direct 76%</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div class="logo"><span class="logo-dot"></span>Direct AI Agent · v0.21</div>
+    <p>Пет-проект · Python · MCP · Яндекс.Директ · VK Ads · RAG</p>
+    <a href="https://github.com/Chegolin123/direct-core" target="_blank">github.com/Chegolin123/direct-core ↗</a>
+  </div>
+</footer>
+
+<script>
+  // Card mouse glow
+  document.querySelectorAll('.card').forEach(c => {
+    c.addEventListener('mousemove', e => {
+      const r = c.getBoundingClientRect();
+      c.style.setProperty('--x', ((e.clientX - r.left) / r.width * 100) + '%');
+      c.style.setProperty('--y', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  });
+  // Reveal on scroll
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (e.isIntersecting) { e.target.style.opacity = 1; e.target.style.transform = 'none'; io.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.card, .stat, .step, .flag, .terminal').forEach(el => {
+    el.style.opacity = 0;
+    el.style.transform = 'translateY(18px)';
+    el.style.transition = 'opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1)';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>
